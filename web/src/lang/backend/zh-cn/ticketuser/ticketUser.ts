@@ -11,6 +11,7 @@ export default {
     'status 0': '待审核',
     'status  1': '已通过',
     'status  2': '已拒绝',
+    email: '电子邮箱',
     role: '角色',
     'role 0': '普通用户',
     'role  1': '客服',

@@ -11,7 +11,7 @@
  Target Server Version : 50726 (5.7.26-log)
  File Encoding         : 65001
 
- Date: 27/01/2026 15:55:07
+ Date: 27/01/2026 16:21:04
 */
 
 SET NAMES utf8mb4;
@@ -44,7 +44,7 @@ CREATE TABLE `ba_admin`  (
 -- ----------------------------
 -- Records of ba_admin
 -- ----------------------------
-INSERT INTO `ba_admin` VALUES (1, 'admin', 'Admin', '/storage/default/20260127/PixPin_2026-01-e9a7c888a790b00f8ad721e3e0911e41265ede35.png', 'admin@buildadmin.com', '18888888888', 0, 1769500056, '127.0.0.1', '$2y$10$GlingsQzOMCrdeUIC0eRCeZ0XlJnN5AGPZfnOKU2Kd2VFS5AGCpNW', '', '', 'enable', 1769500056, 1769497215);
+INSERT INTO `ba_admin` VALUES (1, 'admin', 'Admin', '/storage/default/20260127/PixPin_2026-01-e9a7c888a790b00f8ad721e3e0911e41265ede35.png', 'admin@buildadmin.com', '18888888888', 0, 1769502017, '127.0.0.1', '$2y$10$GlingsQzOMCrdeUIC0eRCeZ0XlJnN5AGPZfnOKU2Kd2VFS5AGCpNW', '', '', 'enable', 1769502017, 1769497215);
 
 -- ----------------------------
 -- Table structure for ba_admin_group
@@ -546,6 +546,7 @@ CREATE TABLE `ba_ticket_user`  (
   `password_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '' COMMENT '密码哈希值',
   `avatar` varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '头像 URL',
   `gender` tinyint(4) NULL DEFAULT 0 COMMENT '性别：0=未知, 1=男, 2=女',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT NULL COMMENT '邮箱',
   `status` tinyint(4) NOT NULL DEFAULT 0 COMMENT '审核状态：0=待审核, 1=已通过, 2=已拒绝',
   `role` tinyint(4) NOT NULL DEFAULT 0 COMMENT '角色：0=普通用户, 1=客服, 2=财务, 9=管理员',
   `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
@@ -557,15 +558,15 @@ CREATE TABLE `ba_ticket_user`  (
 -- ----------------------------
 -- Records of ba_ticket_user
 -- ----------------------------
-INSERT INTO `ba_ticket_user` VALUES (1, '13800000001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000001.png', 1, 1, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (2, '13800000002', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000002.png', 2, 1, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (3, '13800000003', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000003.png', 0, 0, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (4, '13800000004', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000004.png', 1, 2, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (5, '13800000005', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000005.png', 2, 1, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (6, '13800010001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/kf1.png', 1, 1, 1, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (7, '13800010002', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/kf2.png', 2, 1, 1, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (8, '13800020001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/cw1.png', 1, 1, 2, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
-INSERT INTO `ba_ticket_user` VALUES (9, '13800090001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '/storage/default/20260127/PixPin_2026-01-57011c001b25c2b780bbe923814e70f0865552f0.png', 1, 1, 9, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (1, '13800000001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000001.png', 1, 'w551ccc81@test.com', 1, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (2, '13800000002', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000002.png', 2, 't98b73ae2@demo.org', 1, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (3, '13800000003', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000003.png', 0, 'kf8a443c4@test.com', 0, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (4, '13800000004', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000004.png', 1, 'jb017e1cd@local.dev', 2, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (5, '13800000005', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/13800000005.png', 2, 'uf555ef6a@example.com', 1, 0, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (6, '13800010001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/kf1.png', 1, 'ba16d4e3c@local.dev', 1, 1, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (7, '13800010002', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/kf2.png', 2, 'u1d4d39f0@local.dev', 1, 1, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (8, '13800020001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'https://api.adorable.io/avatars/200/cw1.png', 1, 'n1c921a2c@test.com', 1, 2, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
+INSERT INTO `ba_ticket_user` VALUES (9, '13800090001', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', '/storage/default/20260127/PixPin_2026-01-57011c001b25c2b780bbe923814e70f0865552f0.png', 1, 'y754310a7@local.dev', 1, 9, '2026-01-27 15:46:31', '2026-01-27 15:46:31', NULL);
 
 -- ----------------------------
 -- Table structure for ba_token
