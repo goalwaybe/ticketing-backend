@@ -69,9 +69,9 @@
                             :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.status') })"
                         >
                             <!-- 审核状态：0=待审核（Pending）, 1=已通过（Approved）, 2=已拒绝（Rejected） -->
-                            <el-option :label="t('Pending')" value="0"></el-option>
-                            <el-option :label="t('Approved')" value="1"></el-option>
-                            <el-option :label="t('Rejected')" value="2"></el-option>
+                            <el-option :label="t('Pending')" :value="0"></el-option>
+                            <el-option :label="t('Approved')" :value="1"></el-option>
+                            <el-option :label="t('Rejected')" :value="2"></el-option>
                         </el-select>
                     </el-form-item>
 
