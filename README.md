@@ -22,3 +22,6 @@ pnpm build
 然后移动构建文件到 public/assets 下
 
 npm run serve
+
+
+这是 v2.3.5 版本
