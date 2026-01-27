@@ -1,5 +1,5 @@
 export default {
-    id: '用户ID',
+    id: 'ID',
     phone: '手机号（登录账号）',
     password_hash: '密码哈希值',
     password: '密码', // 新增
