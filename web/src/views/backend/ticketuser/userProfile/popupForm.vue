@@ -27,16 +27,8 @@
                     :model="baTable.form.items"
                     :label-position="config.layout.shrink ? 'top' : 'right'"
                     :label-width="baTable.form.labelWidth + 'px'"
-                    :rules="rules"
                 >
-                    <FormItem
-                        :label="t('ticketuser.userProfile.user_id')"
-                        type="remoteSelect"
-                        v-model="baTable.form.items!.user_id"
-                        prop="user_id"
-                        :input-attr="{ pk: 'id', field: 'name', remoteUrl: '' }"
-                        :placeholder="t('Please select field', { field: t('ticketuser.userProfile.user_id') })"
-                    />
+                    <!-- :rules="rules" -->
                     <FormItem
                         :label="t('ticketuser.userProfile.real_name')"
                         type="string"
@@ -97,20 +89,6 @@
                         v-model="baTable.form.items!.alipay_qr_image"
                         prop="alipay_qr_image"
                     />
-                    <FormItem
-                        :label="t('ticketuser.userProfile.created_at')"
-                        type="datetime"
-                        v-model="baTable.form.items!.created_at"
-                        prop="created_at"
-                        :placeholder="t('Please select field', { field: t('ticketuser.userProfile.created_at') })"
-                    />
-                    <FormItem
-                        :label="t('ticketuser.userProfile.updated_at')"
-                        type="datetime"
-                        v-model="baTable.form.items!.updated_at"
-                        prop="updated_at"
-                        :placeholder="t('Please select field', { field: t('ticketuser.userProfile.updated_at') })"
-                    />
                 </el-form>
             </div>
         </el-scrollbar>
@@ -126,13 +104,18 @@
 </template>
 
 <script setup lang="ts">
-import type { FormItemRule } from 'element-plus'
-import { inject, reactive, useTemplateRef } from 'vue'
-import { useI18n } from 'vue-i18n'
-import FormItem from '/@/components/formItem/index.vue'
-import { useConfig } from '/@/stores/config'
-import type baTableClass from '/@/utils/baTable'
-import { buildValidatorData } from '/@/utils/validate'
+import {
+  inject,
+  reactive,
+  useTemplateRef,
+} from 'vue';
+
+import FormItem from '/@/components/formItem/index.vue';
+import { useConfig } from '/@/stores/config';
+import type baTableClass from '/@/utils/baTable';
+import { buildValidatorData } from '/@/utils/validate';
+import type { FormItemRule } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 const config = useConfig()
 const formRef = useTemplateRef('formRef')
