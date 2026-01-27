@@ -2,6 +2,7 @@ export default {
     id: '用户ID',
     phone: '手机号（登录账号）',
     password_hash: '密码哈希值',
+    password: '密码', // 新增
     avatar: '头像 URL',
     gender: '性别',
     'gender 0': '未知',

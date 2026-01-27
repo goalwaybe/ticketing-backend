@@ -65,42 +65,36 @@
                         }"
                         :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.status') })"
                     />
+
+                    <!-- 密码字段 -->
                     <FormItem
-                        :label="t('ticketuser.ticketUser.role')"
-                        type="number"
-                        v-model="baTable.form.items!.role"
-                        prop="role"
+                        v-if="baTable.form.operate === 'Edit'"
+                        :label="t('ticketuser.ticketUser.password')"
+                        type="string"
+                        v-model="baTable.form.items!.password"
+                        prop="password"
+                        :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.password') })"
                         :input-attr="{
-                            content: {
-                                '0': t('ticketuser.ticketUser.role 0'),
-                                ' 1': t('ticketuser.ticketUser.role  1'),
-                                ' 2': t('ticketuser.ticketUser.role  2'),
-                                ' 9': t('ticketuser.ticketUser.role  9'),
-                            },
+                            type: 'password',
+                            showPassword: true
                         }"
-                        :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.role') })"
                     />
-                    <FormItem
-                        :label="t('ticketuser.ticketUser.created_at')"
-                        type="datetime"
-                        v-model="baTable.form.items!.created_at"
-                        prop="created_at"
-                        :placeholder="t('Please select field', { field: t('ticketuser.ticketUser.created_at') })"
-                    />
-                    <FormItem
-                        :label="t('ticketuser.ticketUser.updated_at')"
-                        type="datetime"
-                        v-model="baTable.form.items!.updated_at"
-                        prop="updated_at"
-                        :placeholder="t('Please select field', { field: t('ticketuser.ticketUser.updated_at') })"
-                    />
-                    <FormItem
-                        :label="t('ticketuser.ticketUser.deleted_at')"
-                        type="datetime"
-                        v-model="baTable.form.items!.deleted_at"
-                        prop="deleted_at"
-                        :placeholder="t('Please select field', { field: t('ticketuser.ticketUser.deleted_at') })"
-                    />
+
+<!--                    <FormItem-->
+<!--                        :label="t('ticketuser.ticketUser.role')"-->
+<!--                        type="number"-->
+<!--                        v-model="baTable.form.items!.role"-->
+<!--                        prop="role"-->
+<!--                        :input-attr="{-->
+<!--                            content: {-->
+<!--                                '0': t('ticketuser.ticketUser.role 0'),-->
+<!--                                ' 1': t('ticketuser.ticketUser.role  1'),-->
+<!--                                ' 2': t('ticketuser.ticketUser.role  2'),-->
+<!--                                ' 9': t('ticketuser.ticketUser.role  9'),-->
+<!--                            },-->
+<!--                        }"-->
+<!--                        :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.role') })"-->
+<!--                    />-->
                 </el-form>
             </div>
         </el-scrollbar>
