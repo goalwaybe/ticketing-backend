@@ -60,20 +60,20 @@
                         }"
                         :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.gender') })"
                     /> -->
-                    <FormItem
+                    <el-form-item
                         :label="t('ticketuser.ticketUser.status')"
-                        type="number"
-                        v-model="baTable.form.items!.status"
-                        prop="status"
-                        :input-attr="{
-                            content: {
-                                '0': t('ticketuser.ticketUser.status 0'),
-                                ' 1': t('ticketuser.ticketUser.status  1'),
-                                ' 2': t('ticketuser.ticketUser.status  2'),
-                            },
-                        }"
-                        :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.status') })"
-                    />
+                    >
+                        <el-select
+                            class="w100"
+                            v-model="baTable.form.items!.status"
+                            :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.status') })"
+                        >
+                            <!-- 审核状态：0=待审核（Pending）, 1=已通过（Approved）, 2=已拒绝（Rejected） -->
+                            <el-option :label="t('Pending')" value="0"></el-option>
+                            <el-option :label="t('Approved')" value="1"></el-option>
+                            <el-option :label="t('Rejected')" value="2"></el-option>
+                        </el-select>
+                    </el-form-item>
 
                     <!-- 密码字段 -->
                     <FormItem
@@ -148,4 +148,5 @@ const rules: Partial<Record<string, FormItemRule[]>> = reactive({
 })
 </script>
 
+<style scoped lang="scss"></style>
 <style scoped lang="scss"></style>
