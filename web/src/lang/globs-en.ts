@@ -47,4 +47,7 @@ export default {
     'Expand generic search': 'Expand Universal Search',
     'Link address': 'Link address',
     'No route found to jump~': 'Failed to find a jump route.',
+    Pending: 'Pending',
+    Approved: 'Approved',
+    Rejected: 'Rejected'
 }

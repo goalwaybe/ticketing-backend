@@ -39,6 +39,15 @@
                     <FormItem :label="t('ticketuser.ticketUser.avatar')" type="image" v-model="baTable.form.items!.avatar" prop="avatar" />
                     <FormItem
                         :label="t('ticketuser.ticketUser.gender')"
+                        v-model="baTable.form.items!.gender"
+                        type="radio"
+                        :input-attr="{
+                            border: true,
+                            content: { 0: t('Unknown'), 1: t('ticketuser.ticketUser.male'), 2: t('ticketuser.ticketUser.female') },
+                        }"
+                    />
+                    <!-- <FormItem
+                        :label="t('ticketuser.ticketUser.gender')"
                         type="number"
                         v-model="baTable.form.items!.gender"
                         prop="gender"
@@ -50,7 +59,7 @@
                             },
                         }"
                         :placeholder="t('Please input field', { field: t('ticketuser.ticketUser.gender') })"
-                    />
+                    /> -->
                     <FormItem
                         :label="t('ticketuser.ticketUser.status')"
                         type="number"
@@ -110,13 +119,18 @@
 </template>
 
 <script setup lang="ts">
-import type { FormItemRule } from 'element-plus'
-import { inject, reactive, useTemplateRef } from 'vue'
-import { useI18n } from 'vue-i18n'
-import FormItem from '/@/components/formItem/index.vue'
-import { useConfig } from '/@/stores/config'
-import type baTableClass from '/@/utils/baTable'
-import { buildValidatorData } from '/@/utils/validate'
+import {
+  inject,
+  reactive,
+  useTemplateRef,
+} from 'vue';
+
+import FormItem from '/@/components/formItem/index.vue';
+import { useConfig } from '/@/stores/config';
+import type baTableClass from '/@/utils/baTable';
+import { buildValidatorData } from '/@/utils/validate';
+import type { FormItemRule } from 'element-plus';
+import { useI18n } from 'vue-i18n';
 
 const config = useConfig()
 const formRef = useTemplateRef('formRef')

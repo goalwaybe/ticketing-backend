@@ -48,4 +48,7 @@ export default {
     'Expand generic search': '展开公共搜索',
     'Link address': '链接地址',
     'No route found to jump~': '没有找到可以跳转的路由~',
+    Pending: '待审核',
+    Approved: '已通过',
+    Rejected: '已拒绝'
 }

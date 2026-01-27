@@ -20,14 +20,20 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, provide, useTemplateRef } from 'vue'
-import { useI18n } from 'vue-i18n'
-import PopupForm from './popupForm.vue'
-import { baTableApi } from '/@/api/common'
-import { defaultOptButtons } from '/@/components/table'
-import TableHeader from '/@/components/table/header/index.vue'
-import Table from '/@/components/table/index.vue'
-import baTableClass from '/@/utils/baTable'
+import {
+  onMounted,
+  provide,
+  useTemplateRef,
+} from 'vue';
+
+import { baTableApi } from '/@/api/common';
+import { defaultOptButtons } from '/@/components/table';
+import TableHeader from '/@/components/table/header/index.vue';
+import Table from '/@/components/table/index.vue';
+import baTableClass from '/@/utils/baTable';
+import { useI18n } from 'vue-i18n';
+
+import PopupForm from './popupForm.vue';
 
 defineOptions({
     name: 'ticketuser/ticketUser',
@@ -61,11 +67,13 @@ const baTable = new baTableClass(
                 prop: 'gender',
                 align: 'center',
                 operator: 'RANGE',
+                render: 'tag',
+                custom: { '0': 'info', '1': '', '2': 'success' },
                 sortable: false,
                 replaceValue: {
-                    '0': t('ticketuser.ticketUser.gender 0'),
-                    ' 1': t('ticketuser.ticketUser.gender  1'),
-                    ' 2': t('ticketuser.ticketUser.gender  2'),
+                    0: t('Unknown'),
+                    1: t('ticketuser.ticketUser.male'),
+                    2: t('ticketuser.ticketUser.female'),
                 },
             },
             {
@@ -73,11 +81,14 @@ const baTable = new baTableClass(
                 prop: 'status',
                 align: 'center',
                 operator: 'RANGE',
+                render: 'tag',
+                custom: { '0': 'info', '1': 'success', '2': 'danger' },
                 sortable: false,
+                // 审核状态：0=待审核（Pending）, 1=已通过（Approved）, 2=已拒绝（Rejected）
                 replaceValue: {
-                    '0': t('ticketuser.ticketUser.status 0'),
-                    ' 1': t('ticketuser.ticketUser.status  1'),
-                    ' 2': t('ticketuser.ticketUser.status  2'),
+                    '0': t('Pending'),
+                    '1': t('Approved'),
+                    '2': t('Rejected'),
                 },
             },
             // {

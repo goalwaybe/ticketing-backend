@@ -5,6 +5,9 @@ export default {
     password: '密码', // 新增
     avatar: '头像 URL',
     gender: '性别',
+    male: '男',
+    female: '女',
+    // gender: '性别',
     'gender 0': '未知',
     'gender  1': '男',
     'gender  2': '女',
