@@ -93,6 +93,7 @@ const baTable = new baTableClass(
                     ' 9': t('ticketuser.ticketUser.role  9'),
                 },
             },
+            { label: t('ticketuser.ticketUser.email'), prop: 'email', align: 'center', operator: 'eq', sortable: 'custom', width: 160 },
             { label: t('ticketuser.ticketUser.created_at'), prop: 'created_at', align: 'center', operator: 'eq', sortable: 'custom', width: 160 },
             { label: t('ticketuser.ticketUser.updated_at'), prop: 'updated_at', align: 'center', operator: 'eq', sortable: 'custom', width: 160 },
             { label: t('ticketuser.ticketUser.deleted_at'), prop: 'deleted_at', align: 'center', operator: 'eq', sortable: 'custom', width: 160 },
