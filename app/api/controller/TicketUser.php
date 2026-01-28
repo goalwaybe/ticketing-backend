@@ -4,13 +4,33 @@ namespace app\api\controller;
 
 use app\api\validate\TicketUser as TicketUserValidate;
 use app\common\controller\Api;
+use ba\Random;
 use Throwable;
 use ba\Captcha;
 use think\facade\Config;
 use app\common\facade\Token;
 use app\admin\model\ticketuser\TicketUser as TicketUserModel;
+
 class TicketUser extends Api
 {
+
+    /**
+     * 令牌
+     * @var string
+     */
+    protected string $token = '';
+
+    /**
+     * token 入库 type
+     */
+    public const TOKEN_TYPE = 'ticketUser';
+
+    /**
+     * 令牌默认有效期
+     * 可在 config/buildadmin.php 内修改默认值
+     * @var int
+     */
+    protected int $keepTime = 86400;
 
     /**
      * 登录
@@ -33,7 +53,7 @@ class TicketUser extends Api
 
         if ($this->request->isPost()) {
 //            $params = $this->request->post(['phone', 'password', 'captcha']);
-            $params = $this->request->post(['phone', 'password','captcha']);
+            $params = $this->request->post(['phone', 'password', 'captcha']);
 
             // 验证参数
             $validate = new TicketUserValidate();
@@ -59,30 +79,33 @@ class TicketUser extends Api
                 $this->error(__('Invalid phone or password'));
             }
 
-            // 生成 token
-            $tokenData = [
-                'id' => $user->id,
-                'phone' => $user->phone,
-                'role' => $user->role,
-            ];
+            if (!$this->token) {
+                $this->token = Random::uuid();
+                Token::set($this->token, self::TOKEN_TYPE, $user->id, $this->keepTime);
+            }
 
-            return '234343';
+            $user->last_login_time = date('Y-m-d H:i:s');
+            $user->last_login_ip = $this->request->ip();
 
-//            $accessToken = Token::create($tokenData, 'ticket_user');
+            $user->save();
+
+            $accessToken = $this->token;
 //            $refreshToken = Token::create($tokenData, 'ticket_user_refresh', Config::get('jwt.refresh_ttl', 604800));
-//
-//            $this->success(__('Login succeeded!'), [
-//                'userInfo' => [
-//                    'id' => $user->id,
-//                    'phone' => $user->phone,
-//                    'email' => $user->email,
-//                    'avatar' => $user->avatar,
-//                    'gender' => $user->gender,
-//                    'role' => $user->role,
-//                ],
-//                'accessToken' => $accessToken,
+
+//            $refreshToken= (Common::class)->refreshToken();
+
+            $this->success(__('Login succeeded!'), [
+                'userInfo' => [
+                    'id' => $user->id,
+                    'phone' => $user->phone,
+                    'email' => $user->email,
+                    'avatar' => $user->avatar,
+                    'gender' => $user->gender,
+                    'role' => $user->role,
+                ],
+                'accessToken' => $accessToken,
 //                'refreshToken' => $refreshToken,
-//            ]);
+            ]);
         }
 
         $this->error(__('Invalid request method'));
