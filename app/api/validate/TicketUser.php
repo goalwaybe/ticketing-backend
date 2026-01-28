@@ -37,7 +37,7 @@ class TicketUser extends Validate
     public function sceneRegister(): TicketUser
     {
         return $this->only(['phone', 'password', 'password_confirm', 'captcha', 'real_name', 'account_name', 'wechat_id'])
-            ->append('phone', 'unique:ba_ticket_user');
+            ->append('phone', 'unique:ticket_user');
     }
 
 

@@ -42,7 +42,7 @@ class TicketUser extends Model
 
 
     /**
-     * 创建用户（带详情）
+     * 创建用户（带详情） - 更新版
      * @param array $userData 用户数据
      * @param array $profileData 详情数据
      * @return TicketUser|false
@@ -59,8 +59,10 @@ class TicketUser extends Model
                 'password_hash' => hash_password($userData['password']),
                 'email' => $userData['email'] ?? null,
                 'gender' => $userData['gender'] ?? 0,
-                'status' => 1, // 或根据需求设为0（待审核）
-                'role' => 0,
+                'status' => $userData['status'] ?? 1, // 默认已激活，注册时为0（待审核）
+                'role' => 0, // 普通用户
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
             if (!$user) {
@@ -70,9 +72,14 @@ class TicketUser extends Model
             // 创建用户详情
             $profile = UserProfile::create([
                 'user_id' => $user->id,
-                'real_name' => $profileData['real_name'],
-                'account_name' => $profileData['account_name'],
+                'real_name' => $profileData['real_name'] ?? '',
+                'account_name' => $profileData['account_name'] ?? $profileData['real_name'] ?? '',
                 'wechat_id' => $profileData['wechat_id'] ?? '',
+                'id_card_no' => $profileData['id_card_no'] ?? '',
+                'alipay_qr_image' => $profileData['alipay_qr_image'] ?? '',
+                'wechat_qr_image' => $profileData['wechat_qr_image'] ?? '',
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => date('Y-m-d H:i:s'),
             ]);
 
             if (!$profile) {
@@ -87,6 +94,8 @@ class TicketUser extends Model
         } catch (\Exception $e) {
             // 回滚事务
             self::rollback();
+            // 可以记录日志
+            // \think\facade\Log::error('用户注册失败: ' . $e->getMessage());
             return false;
         }
     }
