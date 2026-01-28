@@ -141,6 +141,11 @@ class TicketUser extends Backend
                         $validate->check($data);
                     }
                 }
+
+                if (!empty($data['password'])) {
+                    $this->model->resetPassword($row->id, $data['password']);
+                }
+
                 $result = $row->save($data);
                 $this->model->commit();
             } catch (Throwable $e) {

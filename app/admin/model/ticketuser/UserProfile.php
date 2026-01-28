@@ -18,4 +18,12 @@ class UserProfile extends Model
     // 自动写入时间戳字段
     protected $autoWriteTimestamp = false;
 
+    /**
+     * 关联用户主表
+     */
+    public function user()
+    {
+        return $this->belongsTo('TicketUser', 'user_id', 'id');
+    }
+
 }
