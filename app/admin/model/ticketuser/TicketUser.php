@@ -49,55 +49,45 @@ class TicketUser extends Model
      */
     public static function createWithProfile(array $userData, array $profileData)
     {
-        try {
-            // 开始事务
-            self::startTrans();
+        // 创建主用户
+        $user = self::create([
+            'phone' => $userData['phone'],
+            'password_hash' => hash_password($userData['password']),
+            'email' => $userData['email'] ?? null,
+            'gender' => $userData['gender'] ?? 0,
+            'status' => $userData['status'] ?? 0, // 注册时默认为0（待审核）
+            'role' => 0, // 普通用户
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
-            // 创建主用户
-            $user = self::create([
-                'phone' => $userData['phone'],
-                'password_hash' => hash_password($userData['password']),
-                'email' => $userData['email'] ?? null,
-                'gender' => $userData['gender'] ?? 0,
-                'status' => $userData['status'] ?? 1, // 默认已激活，注册时为0（待审核）
-                'role' => 0, // 普通用户
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
+        if (!$user) {
+            throw new \Exception('用户创建失败');
+        }
 
-            if (!$user) {
-                throw new \Exception('用户创建失败');
-            }
+        // 创建用户详情
+        $profile = UserProfile::create([
+            'user_id' => $user->id,
+            'real_name' => $profileData['real_name'] ?? '',
+            'account_name' => $profileData['account_name'] ?? $profileData['real_name'] ?? '',
+            'wechat_id' => $profileData['wechat_id'] ?? '',
+            'bank_card_no' => $profileData['bank_card_no'] ?? '',
+            'bank_name' => $profileData['bank_name'] ?? '',
+            'id_card_no' => $profileData['id_card_no'] ?? '',
+            'id_card1_image' => $profileData['id_card1_image'] ?? '',
+            'id_card2_image' => $profileData['id_card2_image'] ?? '',
+            'alipay_qr_image' => $profileData['alipay_qr_image'] ?? '',
+            'wechat_qr_image' => $profileData['wechat_qr_image'] ?? '',
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
-            // 创建用户详情
-            $profile = UserProfile::create([
-                'user_id' => $user->id,
-                'real_name' => $profileData['real_name'] ?? '',
-                'account_name' => $profileData['account_name'] ?? $profileData['real_name'] ?? '',
-                'wechat_id' => $profileData['wechat_id'] ?? '',
-                'id_card_no' => $profileData['id_card_no'] ?? '',
-                'alipay_qr_image' => $profileData['alipay_qr_image'] ?? '',
-                'wechat_qr_image' => $profileData['wechat_qr_image'] ?? '',
-                'created_at' => date('Y-m-d H:i:s'),
-                'updated_at' => date('Y-m-d H:i:s'),
-            ]);
-
-            if (!$profile) {
-                throw new \Exception('用户详情创建失败');
-            }
-
-            // 提交事务
-            self::commit();
-
-            return $user;
-
-        } catch (\Exception $e) {
-            // 回滚事务
-            self::rollback();
-            // 可以记录日志
-            // \think\facade\Log::error('用户注册失败: ' . $e->getMessage());
+        if (!$profile) {
+            // 如果详情创建失败，删除已创建的用户
+            self::where('id', $user->id)->delete();
             return false;
         }
+        return $user;
     }
 
 

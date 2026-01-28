@@ -16,24 +16,39 @@ class TicketUserAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        // 获取当前控制器和操作
-        $controller = $request->controller();
-        $action = $request->action();
-        $fullRoute = 'api/' . strtolower($controller) . '/' . $action;
+        // 获取当前请求路径（例如：/api/ticket_user/register）
+        $path = $request->pathinfo();
+        // 去掉开头的斜杠，并确保路径格式
+        $path = trim($path, '/');
+
+        // 如果路径以api开头，则转换为中间件内部使用的格式
+        if (strpos($path, 'api/') === 0) {
+            $route = $path;
+        } else {
+            $route = 'api/' . $path;
+        }
 
         // 动态获取控制器实例，检查是否为不需要认证的路由
         try {
-            $controllerClass = '\\app\\api\\controller\\' . $controller;
-            if (class_exists($controllerClass)) {
-                $controllerInstance = new $controllerClass();
+            // 从路径中解析出控制器名和方法名（假设路径格式为 api/控制器/方法）
+            $routeParts = explode('/', $route);
+            if (count($routeParts) >= 3) {
+                $controllerName = $routeParts[1]; // 控制器名（例如：ticket_user）
+                $actionName = $routeParts[2];     // 方法名（例如：register）
 
-                // 检查控制器是否有 noNeedAuth 属性
-                if (property_exists($controllerInstance, 'noNeedAuth')) {
-                    $noNeedAuth = $controllerInstance->noNeedAuth;
+                // 将蛇形命名转换为驼峰命名（用于类名）
+                $controllerClass = '\\app\\api\\controller\\' . str_replace(' ', '', ucwords(str_replace('_', ' ', $controllerName)));
 
-                    // 检查当前路由是否在不需要认证的列表中
-                    if (is_array($noNeedAuth) && in_array($fullRoute, $noNeedAuth)) {
-                        return $next($request);
+                if (class_exists($controllerClass)) {
+                    $reflectionClass = new \ReflectionClass($controllerClass);
+                    if ($reflectionClass->hasProperty('noNeedAuth')) {
+                        $property = $reflectionClass->getProperty('noNeedAuth');
+                        $property->setAccessible(true);
+                        $noNeedAuth = $property->getValue();
+
+                        if (is_array($noNeedAuth) && in_array($route, $noNeedAuth)) {
+                            return $next($request);
+                        }
                     }
                 }
             }
@@ -48,7 +63,7 @@ class TicketUserAuth
         }
 
         // 验证Token
-        $tokenInfo = Token::get($token);
+        $tokenInfo = Token::get($token, 'ticketUser');
         if (!$tokenInfo) {
             return $this->unauthorized('Invalid token or token expired');
         }

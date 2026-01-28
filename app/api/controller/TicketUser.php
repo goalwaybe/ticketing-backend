@@ -5,6 +5,7 @@ namespace app\api\controller;
 use app\api\validate\TicketUser as TicketUserValidate;
 use app\common\controller\Api;
 use ba\Random;
+use think\facade\Db;
 use Throwable;
 use ba\Captcha;
 use think\facade\Config;
@@ -37,12 +38,11 @@ class TicketUser extends Api
      * 格式: ['api/控制器名/方法名']
      * @var array
      */
-    protected array $noNeedAuth = [
-        'api/ticket_user/register',    // 注册
-        'api/ticket_user/login',       // 登录
-        'api/ticket_user/checkIn',     // 登录
-        'api/ticket_user/logout',      // 登出
-        'api/ticket_user/test',        // 测试
+    protected static array $noNeedAuth = [
+        'api/ticketuser/register',    // 注册
+        'api/ticketuser/login',       // 登录
+        'api/ticketuser/checkIn',     // 登录
+        'api/ticketuser/test',        // 测试
     ];
 
     /**
@@ -138,7 +138,11 @@ class TicketUser extends Api
                 'real_name',          // 负责人姓名
                 'account_name',       // 开户名（新增）
                 'wechat_id',          // 微信号（注意：字段名改为 wechat_id）
+                'bank_card_no',       //银行账户
+                'bank_name',          //开户行
                 'id_card_no',         // 身份证号（新增）
+                'id_card1_image',         // 身份证正面
+                'id_card2_image',         // 身份证反面
                 'alipay_qr_image',    // 支付宝收款码图片URL（注意：字段名改为 alipay_qr_image）
                 'wechat_qr_image',    // 微信收款码图片URL（注意：字段名改为 wechat_qr_image）
                 'captcha'
@@ -146,7 +150,7 @@ class TicketUser extends Api
 
             $validate = new TicketUserValidate();
             try {
-                $validate->scene('register')->check($params);
+//                $validate->scene('register')->check($params);
             } catch (Throwable  $e) {
                 $this->error($e->getMessage());
             }
@@ -166,7 +170,8 @@ class TicketUser extends Api
             $userModel = new TicketUserModel();
 
             // 开始事务
-            $userModel->startTrans();
+            // 使用Db门面开启事务
+            $userModel::startTrans();
             try {
                 // 准备用户数据
                 $userData = [
@@ -182,7 +187,11 @@ class TicketUser extends Api
                     'real_name' => $params['real_name'] ?? '',
                     'account_name' => $params['account_name'] ?? $params['real_name'], // 开户名默认与负责人姓名一致
                     'wechat_id' => $params['wechat_id'] ?? '',
+                    'bank_card_no' => $params['bank_card_no'] ?? '',
+                    'bank_name' => $params['bank_name'] ?? '',          // 开户行
                     'id_card_no' => $params['id_card_no'] ?? '',
+                    "id_card1_image" => $params['id_card1_image'] ?? '',
+                    "id_card2_image" => $params['id_card2_image'] ?? '',
                     'alipay_qr_image' => $params['alipay_qr_image'] ?? '',
                     'wechat_qr_image' => $params['wechat_qr_image'] ?? '',
                 ];
@@ -195,15 +204,15 @@ class TicketUser extends Api
                 }
 
                 // 提交事务
-                $userModel->commit();
+                $userModel::commit();
             } catch (Throwable $e) {
                 // 回滚事务
-                $userModel->rollback();
-                // 记录错误日志（可选）
-                $this->error(__('用户注册失败') . $e->getMessage());
+                $userModel::rollback();
+                $this->error(__('用户注册失败: ') .  $e->getMessage() . ' Stack trace: ' .  $e->getTraceAsString());
             }
         }
-        $this->error(__('Invalid request method'));
+
+        $this->success(__('注册成功，请等待管理员审核。'));
     }
 
     /**
