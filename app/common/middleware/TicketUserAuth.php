@@ -11,6 +11,22 @@ use app\admin\model\ticketuser\TicketUser as TicketUserModel;
 
 class TicketUserAuth
 {
+
+    /**
+     * 免 Token 认证的公共路由白名单
+     * 格式：['api/common/captcha', 'api/sms/send', ...]
+     * @return array
+     */
+    protected function getPublicRoutes(): array
+    {
+        return [
+            'api/common/captcha', // 图形验证码（二次开发新增）
+            // 👇 以下可保留原系统已有的公共接口（如果知道的话）
+            // 'api/common/region',
+            // 'api/common/upload',
+        ];
+    }
+
     /**
      * 处理请求
      */
@@ -26,6 +42,11 @@ class TicketUserAuth
             $route = $path;
         } else {
             $route = 'api/' . $path;
+        }
+
+        // ✅ 新增：检查是否在公共白名单中
+        if (in_array($route, $this->getPublicRoutes())) {
+            return $next($request);
         }
 
         // 动态获取控制器实例，检查是否为不需要认证的路由
