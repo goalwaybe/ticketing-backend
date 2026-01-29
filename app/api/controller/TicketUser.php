@@ -223,12 +223,21 @@ class TicketUser extends Api
     public function logout()
     {
         if ($this->request->isPost()) {
-            $refreshToken = $this->request->post('refreshToken', '');
-            if ($refreshToken) {
-                Token::delete((string)$refreshToken);
+
+            // 获取access token
+            $accessToken = $this->getTokenFromRequest($this->request);
+
+            if ($accessToken) {
+                // 删除token
+                $deleted = Token::delete($accessToken);
+                if ($deleted) {
+                    $this->success(__('Logout successful'));
+                } else {
+                    $this->success(__('Token already expired or deleted'));
+                }
+            } else {
+                $this->error(__('Token not found in request'));
             }
-            // accessToken 由前端丢弃即可，后端无状态
-            $this->success();
         }
         $this->error(__('Invalid request method'));
     }
