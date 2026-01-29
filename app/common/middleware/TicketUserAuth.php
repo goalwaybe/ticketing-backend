@@ -21,6 +21,8 @@ class TicketUserAuth
     {
         return [
             'api/common/captcha', // 图形验证码（二次开发新增）
+            'api/common/clickCaptcha',
+            'api/common/checkClickCaptcha'
             // 👇 以下可保留原系统已有的公共接口（如果知道的话）
             // 'api/common/region',
             // 'api/common/upload',
