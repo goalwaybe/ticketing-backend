@@ -28,6 +28,7 @@ class TicketUser extends Validate
         'id_card1_image' => 'url|max:500', // 身份证正面图片URL
         'id_card2_image' => 'url|max:500', // 身份证反面图片URL
         'alipay_qr_image' => 'url|max:500', // 支付宝收款码图片URL
+        'alipay_account' => 'max:100', // 支付宝账号
         'wechat_qr_image' => 'url|max:500', // 微信收款码图片URL
     ];
 
@@ -35,7 +36,7 @@ class TicketUser extends Validate
      * 验证场景
      */
     protected $scene = [
-        'register' => ['phone', 'password', 'password_confirm', 'captcha', 'real_name', 'account_name', 'bank_card_no', 'bank_name', 'wechat_id', 'id_card_no', 'id_card1_image', 'id_card2_image', 'alipay_qr_image', 'wechat_qr_image'],
+        'register' => ['phone', 'password', 'password_confirm', 'captcha', 'real_name', 'account_name', 'bank_card_no', 'bank_name', 'wechat_id', 'id_card_no', 'id_card1_image', 'id_card2_image', 'alipay_qr_image', 'alipay_account', 'wechat_qr_image'],
         'login' => [], // 动态场景在 sceneLogin 方法中定义
         'update_profile' => ['email', 'account_name', 'wechat_id', 'bank_card_no','bank_name', 'alipay_qr_image', 'wechat_qr_image'],
     ];
@@ -45,7 +46,7 @@ class TicketUser extends Validate
      */
     public function sceneRegister(): TicketUser
     {
-        return $this->only(['phone', 'password', 'password_confirm', 'captcha', 'real_name', 'account_name', 'bank_card_no','bank_name', 'wechat_id', 'id_card_no', 'id_card1_image', 'id_card2_image', 'alipay_qr_image', 'wechat_qr_image'])
+        return $this->only(['phone', 'password', 'password_confirm', 'captcha', 'real_name', 'account_name', 'bank_card_no', 'bank_name', 'wechat_id', 'id_card_no', 'id_card1_image', 'id_card2_image', 'alipay_qr_image', 'alipay_account', 'wechat_qr_image'])
             ->append('phone', 'unique:ticket_user')
             // 身份证号和图片不是必填项，根据PDF文档可以放心填写但不是强制要求
             ->remove('id_card_no', 'require')
@@ -79,11 +80,24 @@ class TicketUser extends Validate
      */
     public function sceneUpdateProfile(): TicketUser
     {
-        return $this->only(['email', 'account_name', 'wechat_id', 'bank_card_no','bank_name', 'alipay_qr_image', 'wechat_qr_image'])
-            ->remove('email', 'require') // 邮箱不是必填
-            ->remove('account_name', 'require') // 开户名不是必填
-            ->remove('wechat_id', 'require') // 微信号不是必填
+        return $this->only([
+            'email',
+            'account_name',
+            'wechat_id',
+            'bank_card_no',
+            'bank_name',
+            'alipay_qr_image',
+            'alipay_account',  // 添加支付宝账号
+            'wechat_qr_image'
+        ])
+            // 移除必填规则，让所有字段都是可选的
+            ->remove('email', 'require')           // 邮箱不是必填
+            ->remove('account_name', 'require')    // 开户名不是必填
+            ->remove('wechat_id', 'require')       // 微信号不是必填
+            ->remove('bank_card_no', 'require')    // 银行卡号不是必填
+            ->remove('bank_name', 'require')       // 开户行不是必填
             ->remove('alipay_qr_image', 'require') // 支付宝收款码不是必填
+            ->remove('alipay_account', 'require')  // 支付宝账号不是必填
             ->remove('wechat_qr_image', 'require'); // 微信收款码不是必填
     }
 
@@ -115,6 +129,7 @@ class TicketUser extends Validate
             'bank_card_no' => __('银行卡号'),
             'bank_name' => __('开户银行'),
             'alipay_qr_image' => __('支付宝收款码'),
+            'alipay_account' => __('支付宝账号'),
             'wechat_qr_image' => __('微信收款码'),
         ];
 
@@ -145,6 +160,7 @@ class TicketUser extends Validate
             'id_card2_image.max' => __('身份证反面照片URL不能超过500个字符'),
             'alipay_qr_image.url' => __('支付宝收款码必须是有效的URL'),
             'alipay_qr_image.max' => __('支付宝收款码URL不能超过500个字符'),
+            'alipay_account.max' => __('支付宝账户不能超过100个字符'),
             'wechat_qr_image.url' => __('微信收款码必须是有效的URL'),
             'wechat_qr_image.max' => __('微信收款码URL不能超过500个字符'),
             'bank_card_no.length' => __('银行卡号长度不正确'),

@@ -146,6 +146,7 @@ class TicketUser extends Api
                 'id_card1_image',         // 身份证正面
                 'id_card2_image',         // 身份证反面
                 'alipay_qr_image',    // 支付宝收款码图片URL（注意：字段名改为 alipay_qr_image）
+                'alipay_account',    // 支付宝账号
                 'wechat_qr_image',    // 微信收款码图片URL（注意：字段名改为 wechat_qr_image）
                 'captcha'
             ]);
@@ -195,6 +196,7 @@ class TicketUser extends Api
                     "id_card1_image" => $params['id_card1_image'] ?? '',
                     "id_card2_image" => $params['id_card2_image'] ?? '',
                     'alipay_qr_image' => $params['alipay_qr_image'] ?? '',
+                    'alipay_account' => $params['alipay_account'] ?? '',
                     'wechat_qr_image' => $params['wechat_qr_image'] ?? '',
                 ];
 
@@ -277,9 +279,13 @@ class TicketUser extends Api
                 'real_name' => $profile->real_name,
                 'account_name' => $profile->account_name,
                 'wechat_id' => $profile->wechat_id,
+                'bank_name' => $profile->bank_name,
                 'bank_card_no' => $profile->bank_card_no,
                 'id_card_no' => $profile->id_card_no ? '已填写' : '未填写', // 出于安全考虑，不返回完整身份证号
+                'id_card1_image' => $profile->id_card1_image,
+                'id_card2_image' => $profile->id_card2_image,
                 'alipay_qr_image' => $profile->alipay_qr_image,
+                'alipay_account' => $profile->alipay_account,
                 'wechat_qr_image' => $profile->wechat_qr_image,
                 'updated_at' => $profile->updated_at,
             ]);
