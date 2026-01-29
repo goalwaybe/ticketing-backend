@@ -14,6 +14,7 @@ class TicketUser extends Validate
         'password' => 'require|regex:^(?!.*[&<>"\'\n\r]).{6,32}$',
         'password_confirm' => 'require|confirm:password',
         'captcha' => 'require',
+        'captcha_id' => 'require', // 新增：验证码标识
         'email' => 'email',
         'gender' => 'in:0,1,2',
         // 注册时需要填写的信息
@@ -63,11 +64,12 @@ class TicketUser extends Validate
     {
         $fields = ['phone', 'password'];
 
-//        // 根据系统配置决定是否验证验证码
-//        $captchaSwitch = Config::get('buildadmin.ticket_user_login_captcha', false);
-//        if ($captchaSwitch) {
+        // 根据系统配置决定是否验证验证码
+        $captchaSwitch = Config::get('buildadmin.ticket_user_login_captcha', false);
+        if ($captchaSwitch) {
             $fields[] = 'captcha';
-//        }
+            $fields[] = 'captcha_id'; // 添加验证码标识
+        }
 
         return $this->only($fields);
     }
@@ -101,6 +103,7 @@ class TicketUser extends Validate
             'password' => __('密码'),
             'password_confirm' => __('确认密码'),
             'captcha' => __('验证码'),
+            'captcha_id' => __('验证码标识'), // 新增字段
             'email' => __('邮箱'),
             'gender' => __('性别'),
             'real_name' => __('负责人姓名'),
@@ -124,6 +127,7 @@ class TicketUser extends Validate
             'password_confirm.require' => __('请输入确认密码'),
             'password_confirm.confirm' => __('两次输入的密码不一致'),
             'captcha.require' => __('请输入验证码'),
+            'captcha_id.require' => __('验证码标识不能为空'), // 新增错误消息
             'email.email' => __('请输入正确的邮箱地址'),
             'gender.in' => __('性别选择无效'),
             'real_name.require' => __('请输入负责人姓名'),

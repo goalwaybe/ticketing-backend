@@ -83,4 +83,6 @@ return [
     'version'               => 'v2.3.5',
     // 中心接口地址（用于请求模块市场的数据等用途）
     'api_url'               => 'https://buildadmin.com',
+
+    'ticket_user_login_captcha' => true, // 是否开启登录验证码
 ];

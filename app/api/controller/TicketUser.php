@@ -65,8 +65,7 @@ class TicketUser extends Api
     {
 
         if ($this->request->isPost()) {
-//            $params = $this->request->post(['phone', 'password', 'captcha']);
-            $params = $this->request->post(['phone', 'password', 'captcha']);
+            $params = $this->request->post(['phone', 'password', 'captcha','captcha_id']);
 
             // 验证参数
             $validate = new TicketUserValidate();
@@ -76,12 +75,15 @@ class TicketUser extends Api
                 $this->error($e->getMessage());
             }
 
-//            // 验证码校验（默认开启）
-//            $captchaObj = new Captcha();
-//            // 使用手机号作为验证码标识
-//            if (!$captchaObj->check($params['captcha'], $params['phone'] . '_ticket_user_login')) {
-//                $this->error(__('验证码错误'));
-//            }
+
+            $captchaId = $params['captcha_id'];
+
+            // 验证码校验（默认开启）
+            $captchaObj = new Captcha();
+            // 使用手机号作为验证码标识
+            if (!$captchaObj->check($params['captcha'], $captchaId)) {
+                $this->error(__('验证码错误'));
+            }
 
             // 查询用户
             $user = TicketUserModel::where('phone', $params['phone'])
