@@ -84,10 +84,24 @@ class TicketUser extends Backend
         $count = 0;
         $this->model->startTrans();
         try {
+            $currentTime = date('Y-m-d H:i:s');
+
             foreach ($data as $v) {
                 // 临时使用 datetime 格式
-                $v->deleted_at = date('Y-m-d H:i:s');
-                $count += $v->save() ? 1 : 0;
+                $v->deleted_at = $currentTime;
+
+                $saveResult = $v->save();
+
+                if ($saveResult) {
+                    // 2. 更新关联的用户详情表 (ba_user_profile)
+                    if ($v->profile) {
+                        $v->profile->deleted_at = $currentTime;
+                        $v->profile->save();
+                    }
+
+                    $count++;
+                }
+
             }
             $this->model->commit();
         } catch (Throwable $e) {
