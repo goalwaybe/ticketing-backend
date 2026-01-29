@@ -21,6 +21,25 @@ class TicketUser extends Backend
 
     protected string|array $quickSearchField = ['id'];
 
+    // 定义关联表
+    protected array $withJoinTable = ['profile'];
+
+    // 修改这里：使用正确的字段格式
+    protected string|array $indexField = [
+        'id',
+        'phone',
+        'avatar',
+        'email',
+        'gender',
+        'status',
+        'role',
+        'audit_remark',
+        'last_login_time',
+        'last_login_ip',
+        'created_at',
+        'updated_at',
+    ];
+
     public function initialize(): void
     {
         parent::initialize();
@@ -47,7 +66,7 @@ class TicketUser extends Backend
         list($where, $alias, $limit, $order) = $this->queryBuilder();
 
         // 添加软删除过滤条件：只显示 deleted_at 为 NULL 的记录
-        $where[] = ['deleted_at', '=', null];
+        $where[] = ['ticket_user.deleted_at', '=', null];
 
         $res = $this->model
             ->field($this->indexField)
